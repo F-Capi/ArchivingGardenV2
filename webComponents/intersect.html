@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Paper.js SVG Intersection</title>
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/paper.js/0.12.15/paper-full.min.js"></script>
+    <style>
+        canvas {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Simplified SVG definitions -->
+    <svg id="svg" style="display: none;">
+        <g id="yes">
+            <path
+                d="M0.8 224.438V0.438H29.92V224.438H0.8ZM75.675 224.438V0.438H119.515L233.115 191.478V163.318V0.438H262.555V224.438H221.915L104.795 28.598V55.798V224.438H75.675ZM359.57 224.438V24.758H282.13V0.438H465.81V24.758H388.69V224.438H359.57ZM485.738 224.438V0.438H631.338V24.758H514.858V98.038H626.218V122.678H514.858V199.798H635.178V224.438H485.738ZM668.738 224.438V0.438H763.778C806.658 0.438 833.858 21.558 833.858 59.318C833.858 87.478 812.738 107.638 792.578 113.718C813.698 117.238 829.058 135.478 829.058 164.918V224.438H799.938V172.918C799.938 137.398 786.178 126.518 752.898 126.518H697.858V224.438H668.738ZM756.738 101.878C786.818 101.878 804.098 88.118 804.098 62.838C804.098 37.558 786.818 24.758 756.738 24.758H697.858V101.878H756.738ZM869.55 224.438V0.438H913.39L1026.99 191.478V163.318V0.438H1056.43V224.438H1015.79L898.67 28.598V55.798V224.438H869.55ZM1101.93 224.438V0.438H1247.53V24.758H1131.05V98.038H1242.41V122.678H1131.05V199.798H1251.37V224.438H1101.93ZM1336.45 224.438V24.758H1259.01V0.438H1442.69V24.758H1365.57V224.438H1336.45Z"
+                fill="black" />
+        </g>
+        <g id="no">
+            <path
+                d="M106.702 234.8C41.1019 234.8 0.461876 184.56 0.461876 119.28C0.461876 42.16 51.0219 0.879993 109.262 0.879993C158.542 0.879993 195.662 29.68 200.782 70.96H169.742C165.262 44.08 140.942 25.52 109.262 25.52C64.4619 25.52 31.1819 57.2 31.1819 119.28C31.1819 171.76 62.2219 210.48 107.662 210.48C148.622 210.48 175.182 187.12 175.182 141.68V137.52H104.782V112.88H201.742V230H177.742V220.08V198.96C165.582 219.12 138.382 234.8 106.702 234.8Z" />
+            <path
+                d="M330.639 234.8C270.479 234.8 224.399 188.4 224.399 118C224.399 47.6 270.159 0.879993 330.639 0.879993C391.439 0.879993 436.879 47.6 436.879 118C436.879 188.4 390.799 234.8 330.639 234.8ZM330.639 210.48C376.079 210.48 406.159 175.28 406.159 118C406.159 60.72 375.439 25.52 330.639 25.52C286.159 25.52 255.119 60.72 255.119 118C255.119 175.28 285.199 210.48 330.639 210.48Z" />
+            <path
+                d="M561.139 234.8C500.979 234.8 454.899 188.4 454.899 118C454.899 47.6 500.659 0.879993 561.139 0.879993C621.939 0.879993 667.379 47.6 667.379 118C667.379 188.4 621.299 234.8 561.139 234.8ZM561.139 210.48C606.579 210.48 636.659 175.28 636.659 118C636.659 60.72 605.939 25.52 561.139 25.52C516.659 25.52 485.619 60.72 485.619 118C485.619 175.28 515.699 210.48 561.139 210.48Z" />
+            <path
+                d="M699.159 230V5.99998L766.359 5.99998C838.999 5.99998 886.679 38 886.679 117.68C886.679 185.84 847.959 230 773.399 230H699.159ZM769.879 205.36C823.639 205.36 856.279 180.4 856.279 117.68C856.279 61.68 829.719 30.32 768.599 30.32L728.279 30.32V205.36H769.879Z" />
+        </g>
+    </svg>
+    <canvas id="myCanvas" resize></canvas>
+    <script src="/webComponents/intersect.js"></script>
+    <!--
+    <script type="text/paperscript" canvas="myCanvas">
+        // Import SVG
+        var words = project.importSVG(document.getElementById('svg'), {
+            expandShapes: true // This option ensures all shapes are converted to paths
+        });
+        words.visible = true;
+
+        var yesGroup = words.children.yes;
+        var noGroup = words.children.no;
+
+        // Remove fill colors and set stroke color
+        yesGroup.children.forEach(function (child) {
+            child.fillColor = null;
+            child.strokeColor = 'black';
+        });
+        noGroup.children.forEach(function (child) {
+            child.fillColor = null;
+            child.strokeColor = 'black';
+        });
+
+        // Resize the words to fit snugly inside the view:
+        words.fitBounds(view.bounds);
+        words.scale(0.8);
+
+        yesGroup.position = view.center;
+        noGroup.position = view.bounds.bottomRight - [noGroup.bounds.width / 2, noGroup.bounds.height / 2]; // Initially off-screen
+
+        // Define the tool
+        var tool = new Tool();
+        tool.onMouseMove = function (event) {
+            noGroup.position = event.point;
+            for (var i = 0; i < yesGroup.children.length; i++) {
+                for (var j = 0; j < noGroup.children.length; j++) {
+                    showIntersections(noGroup.children[j], yesGroup.children[i]);
+                }
+            }
+        };
+
+        function showIntersections(path1, path2) {
+            if ((path1 instanceof Path || path1 instanceof CompoundPath) && (path2 instanceof Path || path2 instanceof CompoundPath)) {
+                var intersections = path1.getIntersections(path2);
+                for (var i = 0; i < intersections.length; i++) {
+                    new Path.Circle({
+                        center: intersections[i].point,
+                        radius: 5,
+                        fillColor: '#009dec'
+                    }).removeOnMove();
+                }
+            }
+        }
+    </script>-->
+</body>
+
+</html>

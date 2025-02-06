@@ -1,0 +1,164 @@
+:root {
+    --container-margin: 80px;
+  }
+
+
+.columns{
+  width: 100%;
+    display: flex;
+    flex-direction: row;
+    margin-left: 26.13px;
+    margin-top: 104px;
+    justify-content: center;
+    align-items: center;
+}
+
+.column{
+    flex: 1;
+}
+#cell1 p{
+  width: 329px;
+
+}
+
+  .cell{
+    margin-bottom: 44px;
+    padding-left: 15.87px;
+    padding-right: 23.45px;
+  }
+
+  .cell h2{
+    font-family: "Suisse-Intl-mono", sans-serif;
+    font-size: 11.76px;
+font-weight: 400;
+line-height: 25.61px;
+text-align: left;
+
+  }
+
+  .cell p {
+    color: #5E5E5E;
+
+    font-family: 'ABCDiatype-Regular', sans-serif;
+font-size: 11px;
+font-weight: 400;
+line-height: 13.12px;
+letter-spacing: -0.02em;
+text-align: left;
+
+  }
+  #cell-2{
+    margin-bottom: 90px;
+  }
+  
+
+  #info-1{
+    position: relative;
+    width: 87px;
+height: 86px;
+bottom: 0;
+
+  }
+
+  #cell-5{
+    margin-bottom: 75px;
+  }
+  #info-5{
+    font-family: 'ABCDiatype-Regular', sans-serif;
+font-size: 188.13px;
+font-weight: 400;
+line-height: 202.6px;
+letter-spacing: 7.235867977142334px;
+color: #007AFF;
+position: relative;
+top: 0;
+  }
+
+  #cell-6{
+    margin-bottom: 298px;
+  }
+  #info-6{
+    position: absolute;
+    width: 351.79px;
+    position: relative;
+    top: 0;
+
+  }
+  #cell-7{
+    margin-bottom: 280px;
+  }
+  #info-7{
+    width: 264px;
+height: 204px;
+position: relative;
+top: 0;
+  }
+
+  #cell-9{
+    margin-bottom: 281px;
+  }
+
+  #info-9{
+    position: absolute;
+    width: 271.18px;
+height: 271.18px;
+    position: absolute;
+top: 0;
+transform: rotate(12.23deg);
+  }
+
+  #cell-13{
+    margin-bottom: 210px;
+  }
+  #info-13{
+    position: relative;
+    width: 259px;
+height: 249px;
+top: 0;
+  }
+
+  
+  #cell-15{
+    margin-bottom: 97px;
+  }
+  #info-15{
+    position: relative;
+    width: 110px;
+height: 110px;
+top: 0;
+
+  }
+
+  #cell-17{
+    margin-bottom: 113px;
+  }
+  #info-17{
+    position: relative;
+    top: 0;
+    width: 226px;
+height: 222.57px;
+
+  }
+
+  #cell-20{
+    margin-bottom: 145px;
+  }
+  #info-20{
+
+    position: relative;
+    top: 0;    width: 121px;
+height: 121px;
+
+  }
+
+
+  #info-21{
+
+    position: relative;
+    top: 0;    width: 229.67px;
+    height: 234px;
+  }
+
+  .movable-element {
+    cursor: pointer;
+}

@@ -1,0 +1,448 @@
+
+main{
+    width: 100%;
+    height: 400px;
+    position: relative;
+}
+.horizontal-container{
+    width: 100%;
+    height: 800px;
+    overflow: hidden;
+    white-space: nowrap;  
+    cursor: grab; /* Cursor para indicar que se puede agarrar */
+    overflow-y: hidden;
+    
+}
+.horizontal-page{
+     width: 5827px;
+    height: 900px;
+    position: relative;
+}
+
+
+.example{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap:9px;
+    width: fit-content;
+    height: fit-content;
+}
+.example img{
+    box-shadow: 0px 0px 6px 0px rgba(21, 208, 118, 1);
+}
+.example a{
+    font-family: 'ABCDiatype-Regular', sans-serif;
+font-size: 11px;
+font-weight: 400;
+line-height: 18px;
+letter-spacing: 0.5px;
+text-align: left;
+color: black;
+text-decoration: underline;
+}
+
+#example-1{
+    position: absolute;
+    top: 6px;
+    left: 67px;
+}
+#example-1 img{
+    width: 253px;
+    height: 155px; 
+}
+
+
+#example-2{
+    position: absolute;
+    top: 269px;
+    left: 68px;
+}
+
+#example-2 img{
+    width: 430px;
+    height: 263px;
+}
+
+#example-3{
+    position: absolute;
+    top: 380px;
+    left: 623px;
+}
+#example-3 img{
+    width: 150px;
+height: 100px;
+}
+
+
+#example-4{
+    position: absolute;
+    top: 39px;
+    left: 983px;
+}
+#example-4 img{
+    width: 253px;
+    height: 155px;
+}
+
+
+#example-5{
+    position: absolute;
+    top: 292px;
+    left: 899px;
+}
+#example-5 img{
+    width: 430px;
+    height: 263px;
+}
+
+
+
+#example-6{
+    position: absolute;
+    top: 744px;
+    left: 1179px;
+}
+#example-6 img{
+    width: 150px;
+    height: 100px;
+}
+#example-7{
+    position: absolute;
+    top: 3px;
+    left: 1486px;
+}
+#example-7 img{
+    width: 150px;
+    height: 100px;
+}
+
+#example-8{
+    position: absolute;
+    top: 165px;
+    left: 1487px;
+}
+#example-8 img{
+    width: 150px;
+    height: 100px;
+}
+
+#example-9{
+    position: absolute;
+    top: 318px;
+    left: 1664px;
+}
+#example-9 img{
+    width: 253px;
+    height: 155px;
+}
+#example-10{
+    position: absolute;
+    top: 556px;
+    left: 1487.06px;
+}
+#example-10 img{
+    width: 430px;
+    height: 263px;
+}
+
+#example-11{
+    position: absolute;
+    top: 6px;
+    left: 1785px;
+}
+#example-11 img{
+    width: 150px;
+    height: 100px;
+}
+
+
+#example-12{
+    position: absolute;
+    top: 212px;
+    left: 2042px;
+}
+#example-12 img{
+    width: 150px;
+    height: 100px;
+}
+
+#example-13{
+    position: absolute;
+    top: 380px;
+    left: 2045.06px;
+}
+#example-13 img{
+    width: 480px;
+    height: 263px;
+}
+#example-14{
+    position: absolute;
+    top: 717px;
+    left: 2052px;
+}
+#example-14 img{
+    width: 150px;
+    height: 100px;
+}
+
+#example-15{
+    position: absolute;
+    top: 717px;
+    left: 2543px;
+}
+#example-15 img{
+    width: 150px;
+    height: 100px;
+}
+
+#example-16{
+    position: absolute;
+    top: 717px;
+    left: 2727px;
+}
+#example-16 img{
+    width: 150px;
+    height: 100px;
+}
+#example-17{
+    position: absolute;
+    top: 626px;
+    left: 3190px;
+}
+#example-17 img{
+    width: 253px;
+    height: 155px;
+}
+#example-18{
+    position: absolute;
+    
+top: 89px;
+left: 3573px;
+}
+#example-18 img{
+    
+width: 150px;
+height: 100px;
+}
+
+#example-19{
+    position: absolute;
+    
+top: 253px;
+left: 3573px;
+}
+#example-19 img{
+    
+width: 150px;
+height: 100px;
+}
+
+#example-20{
+    position: absolute;
+    
+top: 433px;
+left: 3786px;
+}
+#example-20 img{
+    
+width: 253px;
+height: 155px;
+}
+
+#example-21{
+    position: absolute;
+    top: 0;
+left: 4543px;
+}
+#example-21 img{
+    
+width: 430px;
+height: 263px;
+}
+
+#example-22{
+    position: absolute;
+    top: 390px;
+    left: 4747px;
+}
+#example-22 img{
+    
+width: 430px;
+height: 263px;
+}
+
+
+#example-23{
+    position: absolute;
+    top: 719px;
+    left: 5027px;
+}
+#example-23 img{
+    
+width: 150px;
+height: 100px;
+}
+
+
+#example-24{
+    position: absolute;
+  
+top: 0px;
+left: 5026px;
+}
+#example-24 img{
+    
+width: 253px;
+height: 155px;
+}
+
+
+#example-25{
+    position: absolute;
+  
+top: 719px;
+left: 5219px;
+}
+#example-25 img{
+    
+width: 150px;
+height: 100px;
+}
+
+#example-26{
+    position: absolute;
+  
+top: 261px;
+left: 5330px;
+}
+#example-26 img{
+    
+width: 430px;
+height: 263px;
+}
+
+.url-example{
+position: absolute;
+    font-family: "Suisse-Intl-Mono", sans-serif;;
+font-size: 14px;
+font-weight: 400;
+text-align: left;
+text-shadow: 0px 0px 4px rgba(21, 208, 118, 1);
+text-decoration: underline;
+}
+
+
+
+#url-example-1{
+top: 108px;
+left: 468px;
+}
+#url-example-2{
+    top: 148px;
+    left: 468px;
+}
+#url-example-3{
+    top: 539px;
+    left: 2727px;
+}
+#url-example-4{
+    top: 575px;
+    left: 2727.06px;
+}
+   
+#url-example-5{
+    top: 606px;
+    left: 2727.06px;
+}
+#url-example-6{
+    top: 0px;
+    left:3582px;
+}
+
+#url-example-7{
+    top: 36px;
+    left:4116px;
+}
+
+#url-example-8{
+    top: 234px;
+    left:4102px;
+}
+
+#url-example-9{
+    top: 268px;
+    left:4102px;
+}
+
+.submit-here{
+    width: 1003px;
+height: 162px;
+font-family: "jgs_Font";
+font-size: 90px;
+font-weight: 400;
+line-height: 64px;
+text-align: left;
+color: rgba(116, 125, 3, 1);
+position: absolute;
+white-space: normal; 
+}
+
+#submit-here-1{
+top: 663px;
+left: 55px;
+
+}
+#submit-here-2{
+    top: 663px;
+    left: 3576px;
+    }
+
+    
+
+.top-container{
+    padding-left: 39px;
+    height: 924px;
+}
+.top-container h2{
+    margin-top: 153px;
+    font-family: 'ABCDiatype-Regular', sans-serif;
+font-size: 16px;
+font-weight: 400;
+line-height: 19px;
+text-align: left;
+margin-bottom: 30px;
+
+}
+
+.top-container p{
+    font-family: 'ABCDiatype-Regular', sans-serif;
+    max-width: 543px;
+font-size: 14px;
+font-weight: 400;
+line-height: 17px;
+text-align: left;
+margin-bottom: 24px;
+
+}
+
+.top-container a{
+    font-family: 'ABCDiatype-Regular', sans-serif;
+font-size: 11px;
+font-weight: 400;
+line-height: 19px;
+text-align: left;
+color: black;
+text-decoration: underline;
+margin-bottom: 85px;
+display: block;
+
+}
+main a:hover{
+    color:rgba(0, 122, 255, 1);
+}
+
+#flowers{
+    float: right;
+    margin-bottom: 75px;
+}

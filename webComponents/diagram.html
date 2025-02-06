@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Force Directed Graph con Movimientos Menos Elásticos</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        svg {
+            border: 1px solid black;
+        }
+
+        .node {
+            border: 1px solid #666;
+            border-radius: 10px;
+            padding: 10px;
+            text-align: center;
+            background: #f9f9f9;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .main-node {
+            background-color: blue;
+            color: white;
+        }
+
+        .child-node {
+            background-color: orange;
+            color: black;
+        }
+
+        .invisible-link {
+            stroke: rgba(0, 0, 0, 0);
+            /* Completely invisible */
+        }
+    </style>
+</head>
+
+<body>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const width = 928;
+            const height = 680;
+            const center = { x: width / 2, y: height / 2 };
+            let isDragging = false; // Variable global para rastrear si algún nodo está siendo arrastrado
+
+
+
+            const data = {
+                nodes: [
+                    { id: "Web Components", group: 1, type: 'main-node', x: center.x, y: center.y, distance: 0 },
+                    { id: "Slider", group: 2, type: 'child-node', angle: 0, distance: 350 },
+                    { id: "Banner", group: 2, type: 'child-node', angle: Math.PI, distance: 300 },
+                    { id: "Navigation", group: 2, type: 'child-node', angle: Math.PI / 2, distance: 350 }
+                ],
+                links: [
+                    { source: "Web Components", target: "Slider", value: 1 },
+                    { source: "Web Components", target: "Banner", value: 1 },
+                    { source: "Web Components", target: "Navigation", value: 1 }
+                ]
+            };
+
+            data.nodes.forEach((node, index) => {
+                node.uniqueIndex = index; // Añade un índice único a cada nodo
+                if (node.id !== "Web Components") { // Nodo principal en el centro
+                    node.x = center.x + Math.cos(node.angle) * node.distance;
+                    node.y = center.y + Math.sin(node.angle) * node.distance;
+                }
+            });
+
+            data.links.forEach(link => {
+                const sourceNode = data.nodes.find(node => node.id === link.source);
+                const targetNode = data.nodes.find(node => node.id === link.target);
+                if (!sourceNode || !targetNode) {
+                    console.error('Uno de los nodos para el enlace no se encuentra:', link);
+                } else {
+                    link.distance = sourceNode.distance + targetNode.distance;
+                }
+            });
+
+            data.nodes.forEach(node => {
+                if (node.type === 'main-node') { // Nodo principal en el centro
+                    node.fx = center.x; // Fijar la posición x
+                    node.fy = center.y; // Fijar la posición y
+                }
+            });
+
+            const linkForce = d3.forceLink(data.links)
+                .id(d => d.id)
+                .distance(d => d.distance)
+                .strength(1); // Aumenta la fuerza para mantener más firmemente la distancia
+
+            const simulation = d3.forceSimulation(data.nodes)
+                .force("link", linkForce)
+                .force("charge", d3.forceManyBody().strength(d => d.type === 'main-node' ? -500 : -50))
+                .alpha(0.3)
+                .alphaMin(0.02)
+                .alphaDecay(0.1)
+                .force("link", d3.forceLink(data.links)
+                    .id(d => d.id)
+                    .distance(d => d.distance)
+                    .strength(1.0));
+
+
+            const svg = d3.select("body").append("svg")
+                .attr("width", width)
+                .attr("height", height);
+
+            const link = svg.append("g")
+                .selectAll("line")
+                .data(data.links)
+                .join("line")
+                .attr("stroke", "#999")
+                .attr("stroke-width", d => Math.sqrt(d.value));
+
+            const node = svg.append("g")
+                .selectAll("foreignObject")
+                .data(data.nodes)
+                .join("foreignObject")
+                .attr("width", 160)
+                .attr("height", 50)
+                .html(d => `<div class="node ${d.type}">${d.id}</div>`)
+                .call(d3.drag()
+                    .on("start", dragstarted)
+                    .on("drag", dragged)
+                    .on("end", dragended));
+
+            simulation.on("tick", () => {
+                const increment = 0.005;  // Incremento muy pequeño para el cambio de ángulo
+
+                node.each(function (d) {
+                    if (d.type === 'child-node' && !d.isDragging) {
+                        // Ajustar el ángulo gradualmente para cambiar la dirección del movimiento
+                        d.angle += increment * Math.cos(Date.now() / 5000 + d.uniqueIndex); // Uso de coseno para variación suave
+
+                        // Movimiento basado en el ángulo ajustado
+                        d.x += Math.cos(d.angle) * 0.2;
+                        d.y += Math.sin(d.angle) * 0.2;
+                    }
+                    if (simulation.alphaTarget() < 0.1) {
+                        simulation.alphaTarget(0.3);
+                    }
+                });
+
+                updateLinksAndNodesPositions();
+            });
+
+            function updateLinksAndNodesPositions() {
+                link.attr("x1", d => d.source.x)
+                    .attr("y1", d => d.source.y)
+                    .attr("x2", d => d.target.x)
+                    .attr("y2", d => d.target.y);
+
+                node.attr("x", d => d.x - 80)
+                    .attr("y", d => d.y - 25);
+            }
+
+
+            function dragstarted(event) {
+                if (!event.active) simulation.alphaTarget(0.3).restart();
+                event.subject.fx = event.subject.x;
+                event.subject.fy = event.subject.y;
+            }
+
+            function dragged(event) {
+                event.subject.fx = event.x;
+                event.subject.fy = event.y;
+            }
+
+            function dragended(event) {
+                if (!event.active) simulation.alphaTarget(0.1);
+                // Solo restablecer la posición fija si es el nodo principal
+                if (event.subject.id === "Web Components") {
+                    event.subject.fx = event.x; // Mantén el nodo principal en la posición arrastrada
+                    event.subject.fy = event.y;
+                } else {
+                    // Libera otros nodos para moverse dinámicamente según la simulación
+                    event.subject.fx = null;
+                    event.subject.fy = null;
+                    // Actualizar las distancias de los enlaces asociados al nodo arrastrado
+                    data.links.forEach(link => {
+                        if (link.source.id === event.subject.id || link.target.id === event.subject.id) {
+                            const sourceNode = data.nodes.find(node => node.id === link.source.id);
+                            const targetNode = data.nodes.find(node => node.id === link.target.id);
+                            const dx = targetNode.x - sourceNode.x;
+                            const dy = targetNode.y - sourceNode.y;
+                            const currentDistance = Math.sqrt(dx * dx + dy * dy) + 35;
+                            link.distance = currentDistance; // Solo actualizar la distancia real sin añadir extra
+                        }
+                    });
+
+                    // Aplicar suavemente los cambios a la simulación
+                    simulation.force("link").initialize(data.nodes); // Re-inicializar las fuerzas de enlace con los nodos actualizados
+                    simulation.alpha(0.3).restart(); // Ligeramente aumenta alpha para una transición suave
+                }
+
+
+            }
+
+        });
+    </script>
+</body>
+
+</html>
