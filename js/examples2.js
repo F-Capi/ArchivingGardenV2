@@ -9,8 +9,9 @@ async function main() {
         groupContainer.classList.add("groupContainer");
 
         group.forEach((example) => {
-            const div = document.createElement("div");
+            const div = document.createElement("a");
             div.classList.add("exampleContainer");
+            div.href = example.link;
 
             const imgBox = document.createElement("div");
             imgBox.classList.add("exampleImagebox");

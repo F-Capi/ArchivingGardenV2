@@ -52,9 +52,9 @@ text-align: center;
 }
 #examplesText{
     display: flex;
-width: 456px;
-height: 152px;
-padding: 19px 20px;
+    width: 346px;
+    height: 170px;
+    padding: 19px 20px;
 flex-direction: column;
 align-items: flex-start;
 border-radius: 15px;
@@ -114,8 +114,9 @@ font-style: normal;
 text-transform: capitalize;
 }
 #textParagraph{
-    width: 409.419px;
-height: 76.903px;
+    width: 294.469px;
+    height: 89px;
+    
 color: #000;
 font-family: 'ABCDiatype-Regular', sans-serif;
 font-size: 12px;

@@ -42,11 +42,11 @@ const routes = [
 
     {
         path: '/useful-links',
-        template: '/html/usefulLinks.html',
+        template: '/html/usefulLinks2.html',
         title: "Useful Links",
         description: "Useful links and resources",
         scripts: ['https://d3js.org/d3.v7.min.js', '/js/linksMenu.js'],
-        styles: ['/css/usefulLinks.css']
+        styles: ['/css/usefulLinks2.css']
     },
     {
         path: '/useful-links/categories',
@@ -54,7 +54,7 @@ const routes = [
         title: "Useful Links",
         description: "Useful links and resources",
         scripts: ['https://d3js.org/d3.v7.min.js', 'js/category.js'],
-        styles: ['/css/usefulLinks.css']
+        styles: ['/css/usefulLinks2.css']
     },
     {
         path: '/useful-links/categories/all-links',
@@ -157,6 +157,17 @@ const locationHandler = async () => {
     document.title = route.title;
 
 
+    // Manejar la barra de navegación de categorías
+    const nav = document.querySelector(".category-navbar");
+    console.log(pathSegments);
+    if ((pathSegments !== "/useful-links/categories" && pathSegments !== "/useful-links/categories/all-links") || pathSegments == "/useful-links") {
+        console.log("yes");
+        nav.classList.add("hidden");
+    } else {
+        console.log("no");
+
+        nav.classList.remove("hidden");
+    }
     // Quitar estilos antiguos y cargar nuevos
     document.querySelectorAll('link[rel="stylesheet"]:not(#common-styles)').forEach(link => link.remove());
     await loadStyles(route.styles);
@@ -203,13 +214,6 @@ const locationHandler = async () => {
     }
 
 
-    // Manejar la barra de navegación de categorías
-    const nav = document.querySelector(".category-navbar");
-    if (pathSegments !== "/useful-links/categories" && pathSegments !== "/useful-links/categories/all-links") {
-        nav.classList.add("hidden");
-    } else {
-        nav.classList.remove("hidden");
-    }
     await loadScripts(route.scripts);
 
 
