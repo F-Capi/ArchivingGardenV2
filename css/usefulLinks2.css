@@ -86,44 +86,54 @@ margin-left: 13.58px;
     
     
 }
+.node-content {
+    display: inline-block;
+    transition: transform 0.3s ease;
+}
 
+/* Cuando se haga hover sobre el nodo useful-links, se escala el <img> */
+#Useful .useful-links {
+    transition: transform 0.2s ease-in-out;
+
+}
+
+
+#Useful:hover .useful-links {
+    transform: scale(1.2);    transform-origin: center center;
+
+}
+#Useful{
+    position: relative;
+}
+#Useful span{
+    position: absolute;
+    top: 55%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #FFF;
+  cursor: pointer;
+  font-family: 'ABCDiatype-Regular', sans-serif;font-size: 14px;
+font-style: normal;
+font-weight: 400;
+line-height: 20.975px; /* 149.82% */
+}
 
 .useful-links {
     cursor: pointer;
-    min-width: 132.365px;
-    min-height: 113.491px;
-    background-image: url("../images/folder1.svg");
-    background-size: cover;           /* Ajusta la imagen para cubrir todo el elemento */
-    background-position: center;      /* Centra la imagen */
-    background-repeat: no-repeat;
-    
-
-    
-    /* Estilos de texto y alineación */
+    width: 142.365px;
+    height: 113.491px;
     font-family: 'ABCDiatype-Regular', sans-serif;
     font-size: 14px;
     font-weight: 400;
     text-align: center; 
-    display: flex;
-    justify-content: center;
-    align-items: center;
     color: #FFF;
-    padding-top: 20px;
-    
-    /* Asegúrate de que no se oculte nada al escalar */
+  }
+  foreignObject {
     overflow: visible;
-  }
-  .useful-links {
-    transition: transform 0.2s ease;
-    transform-origin: center center;
-  }
-  
+}
 
-  
-  
-  .useful-links:hover {
-    transform: scale(1.15);
-  }
+/* Estilos para el contenido de los nodos */
+
     
 .category{ 
      cursor: pointer;

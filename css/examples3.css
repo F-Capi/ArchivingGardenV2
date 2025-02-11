@@ -64,30 +64,55 @@ position: fixed;
 top: 92px;
 z-index: 100; 
 }
-#share{
-    z-index: 100; 
+#share {
+    z-index: 100;
     color: #FFF;
     font-family: 'ABCDiatype-Regular', sans-serif;
-font-size: 14px;
-font-style: normal;
-display: flex;
-width: 321px;
-height: 42px;
-padding: 7px 12px;
-justify-content: center;
-align-items: center;
-border-radius: 10px;
-background:  #FF5E30;
-margin: auto;
-position: fixed;
-left: 50%;
+    font-size: 14px;
+    font-style: normal;
+    display: flex;
+    width: 321px;
+    height: 42px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    background: #FF5E30;
+    margin: auto;
+    position: fixed;
+    left: 50%;
     transform: translateX(-50%);
-top: 159.56px;
-padding-bottom: 5px;
+    top: 159.56px;
+    transition: 0.5s ease-in-out;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
-#share:hover{
+#share:hover {
     background-color: #FF3900;
+    border-radius: 100px;
+}
+
+.marquee {
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    width: 100%;
+    position: relative;
+}
+
+.marquee div {
+    display: flex;
+    white-space: nowrap;
+    animation: marquee 10s linear infinite;
+}
+
+.marquee div span {
+    padding-right: 50px; /* Espaciado entre textos */
+}
+
+@keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); } /* Movimiento continuo */
 }
 
 #textTag{

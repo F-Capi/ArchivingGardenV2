@@ -20,20 +20,17 @@ export class DynamicDiagram {
         this.data = data;
         this.positions = positions;
 
-        // Configuración inicial del centro (sin escalado en posiciones)
-        // Se utiliza positions.left/positions.right/positions.top si se definen,
-        // de lo contrario se usa el centro del contenedor para x (y para y se deja como esté o se provea desde el JSON)
+        // Configuración inicial del centro
         center.x =
             positions.left !== null
                 ? positions.left
                 : positions.right !== null
                     ? this.width - positions.right
                     : this.width / 2;
-        center.y = positions.top !== null ? positions.top : center.y; // Si no se provee, se mantiene el valor previo (podría venir del JSON)
+        center.y = positions.top !== null ? positions.top : center.y;
         this.center = center;
 
-        // Calcula el factor de escala basado en la resolución original (1718 x 955)
-        // Este factor se usará ÚNICAMENTE para escalar las distancias de los enlaces
+        // Calcula el factor de escala (solo para escalar las distancias de los enlaces)
         this.scale = Math.min(this.width / 1718, this.height / 955);
 
         this.isDragging = false;
@@ -48,21 +45,15 @@ export class DynamicDiagram {
         const container = d3.select(this.selector).node();
         this.width = container.clientWidth;
         this.height = container.clientHeight;
-        // Recalcular el factor de escala (solo para distancias)
         this.scale = Math.min(this.width / 1718, this.height / 955);
 
-        // **No se sobrescribe this.center**, de modo que se conserva la posición
-        // asignada en el constructor o establecida en el JSON
-
-        // Establecer posiciones de los nodos SIN escalar (se usan las distancias originales)
+        // Establecer posiciones iniciales de los nodos (sin escalar)
         this.data.nodes.forEach((node, index) => {
             node.uniqueIndex = index;
             if (node.type !== "main-node") {
                 node.x = this.center.x + Math.cos(node.angle) * node.distance;
                 node.y = this.center.y + Math.sin(node.angle) * node.distance;
             } else {
-                // El main-node conserva su posición definida en el constructor/JSON
-                // (no se forzará al centro)
                 node.x = this.center.x;
                 node.y = this.center.y;
             }
@@ -70,7 +61,6 @@ export class DynamicDiagram {
 
         // Calcular distancias de los enlaces aplicando el factor de escala
         this.data.links.forEach(link => {
-            // Si link.source (o target) es un objeto, usamos su propiedad id; si no, es el ID
             const sourceId = typeof link.source === "object" ? link.source.id : link.source;
             const targetId = typeof link.target === "object" ? link.target.id : link.target;
 
@@ -84,7 +74,7 @@ export class DynamicDiagram {
             }
         });
 
-        // Fijar la posición del nodo principal (si se desea fijarla)
+        // Fijar la posición del nodo principal (si se desea)
         this.data.nodes.forEach(node => {
             if (node.type === "main-node") {
                 node.fx = this.center.x;
@@ -106,7 +96,7 @@ export class DynamicDiagram {
             .alphaMin(0.02)
             .alphaDecay(0.1);
 
-        // Eliminar cualquier SVG previo para redibujar el diagrama
+        // Eliminar cualquier SVG previo
         d3.select(this.selector).select("svg").remove();
 
         const svg = d3.select(this.selector)
@@ -128,11 +118,18 @@ export class DynamicDiagram {
             .selectAll("foreignObject")
             .data(this.data.nodes)
             .join("foreignObject")
-            .html(d =>
-                d.type !== "main-node"
-                    ? `<a href="${d.url}" class="node-content ${d.class}">${d.id}</a>`
-                    : `<div class="node-content ${d.class}">${d.id}</div>`
-            )
+            // Si el nodo es de tipo "useful-links", lo creamos con <img>; sino, con enlace o div según corresponda.
+            .html(d => {
+                if (d.class === "useful-links") {
+                    return `<div  id="Useful"><img src="${d.imgUrl || '../images/folder.png'}" 
+                                  class="node-content useful-links" 
+                                  alt="${d.id}" /><span>${d.id}</span></div>`;
+                } else {
+                    return d.type !== "main-node"
+                        ? `<a href="${d.url}" class="node-content ${d.class}">${d.id}</a>`
+                        : `<div class="node-content ${d.class}">${d.id}</div>`;
+                }
+            })
             .call(
                 d3.drag()
                     .on("start", (event, d) => this.dragstarted(event, d))
@@ -140,11 +137,22 @@ export class DynamicDiagram {
                     .on("end", (event, d) => this.dragended(event, d))
             );
 
-        // Inicializar tamaños y posiciones de cada nodo (sin escalar tamaños)
+        // Agregar eventos de hover SOLO para el nodo "useful-links"
+        node.filter(d => d.class === "useful-links")
+            .on("mouseover", (event, d) => {
+                d.isHovered = true;
+            })
+            .on("mouseout", (event, d) => {
+                d.isHovered = false;
+            });
+
+        // Inicializar tamaños y posiciones de cada nodo (se usan las dimensiones actuales)
         node.each(function (d) {
             const div = this.querySelector(".node-content");
             if (div) {
                 const bbox = div.getBoundingClientRect();
+                d.width = bbox.width;
+                d.height = bbox.height;
                 d3.select(this)
                     .attr("width", bbox.width)
                     .attr("height", bbox.height)
@@ -153,16 +161,24 @@ export class DynamicDiagram {
             }
         });
 
-        // Función para actualizar posiciones de nodos y enlaces
+        // Función para actualizar posiciones y (re)calcular dimensiones
         function updateNodePositions() {
             node.each(function (d) {
                 const div = this.querySelector(".node-content");
-                const bbox = div.getBoundingClientRect();
-                d.width = bbox.width;
-                d.height = bbox.height;
-                d3.select(this)
-                    .attr("x", d.x - d.width / 2)
-                    .attr("y", d.y - d.height / 2);
+                if (!div) return;
+                // Si es useful-links y está en hover, no recalculamos sus dimensiones
+                if (d.class === "useful-links" && d.isHovered) {
+                    d3.select(this)
+                        .attr("x", d.x - d.width / 2)
+                        .attr("y", d.y - d.height / 2);
+                } else {
+                    const bbox = div.getBoundingClientRect();
+                    d.width = bbox.width;
+                    d.height = bbox.height;
+                    d3.select(this)
+                        .attr("x", d.x - d.width / 2)
+                        .attr("y", d.y - d.height / 2);
+                }
             });
 
             link
@@ -174,72 +190,35 @@ export class DynamicDiagram {
 
         updateNodePositions();
 
-        // Configuración de la simulación: actualización de posiciones en cada tick
+        // Actualización de posiciones en cada tick de la simulación
         this.simulation.on("tick", () => {
-            let amplitude, frequency, phaseShift;
-            if (this.lowMovement) {
-                amplitude = 0.2;
-                frequency = 0.4;
-                phaseShift = 0.01;
-            } else {
-                amplitude = 0.2;
-                frequency = 0.4;
-                phaseShift = 0.01;
-            }
-
             // Actualizar las posiciones de los nodos secundarios
             node.each(function (d) {
                 if (d.type === "child-node" && !d.isDragging) {
+                    // Actualización "flotante" de los nodos secundarios
+                    const phaseShift = 0.01;
+                    const frequency = 0.4;
+                    const amplitude = 0.2;
                     d.angle += phaseShift * Math.cos(Date.now() / 10000 + d.uniqueIndex * frequency);
                     d.x += amplitude * Math.cos(d.angle);
                     d.y += amplitude * Math.sin(d.angle);
                 }
             });
 
+            // Reiniciar la simulación si es necesario
             if (this.simulation.alpha() < 0.1) {
                 this.simulation.alpha(0.2).restart();
             }
 
+            // Actualizar las posiciones de los nodos
             node
                 .attr("x", d => d.x - d.width / 2)
                 .attr("y", d => d.y - d.height / 2);
 
-            // Actualizar las posiciones de los enlaces.
-            // Para el main-node, se usan sus bordes según la propiedad linkStart
+            // Actualizar las posiciones de los enlaces
             link
-                .attr("x1", d => {
-                    if (d.source.type === "main-node") {
-                        switch (d.source.linkStart) {
-                            case "bottom":
-                                return d.source.x;
-                            case "top":
-                                return d.source.x;
-                            case "left":
-                                return d.source.x - d.source.width / 2;
-                            case "right":
-                                return d.source.x + d.source.width / 2;
-                            default:
-                                return d.source.x;
-                        }
-                    }
-                    return d.source.x;
-                })
-                .attr("y1", d => {
-                    if (d.source.type === "main-node") {
-                        switch (d.source.linkStart) {
-                            case "bottom":
-                                return d.source.y + d.source.height / 2;
-                            case "top":
-                                return d.source.y - d.source.height / 2;
-                            case "left":
-                            case "right":
-                                return d.source.y;
-                            default:
-                                return d.source.y;
-                        }
-                    }
-                    return d.source.y;
-                })
+                .attr("x1", d => d.source.x)
+                .attr("y1", d => d.source.y)
                 .attr("x2", d => d.target.x)
                 .attr("y2", d => d.target.y);
         });
@@ -247,7 +226,7 @@ export class DynamicDiagram {
 
     resize() {
         // Al cambiar el tamaño del contenedor se vuelve a configurar el diagrama,
-        // pero se mantiene la posición del nodo principal según lo establecido inicialmente.
+        // manteniendo la posición del nodo principal según lo establecido.
         this.setup();
     }
 
@@ -263,7 +242,6 @@ export class DynamicDiagram {
         if (event.subject.type === "main-node") {
             this.data.links.forEach(link => {
                 if (link.source.id === event.subject.id || link.target.id === event.subject.id) {
-                    // Reducir gradualmente la distancia de los enlaces
                     link.distance *= 0.9986;
                 }
             });

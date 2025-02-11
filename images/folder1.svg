@@ -1,30 +1,5 @@
-<svg width="144" height="123" viewBox="0 0 144 123" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g filter="url(#filter0_d_92_166)">
-<path d="M5.81787 13.5828V29.8441V31.9071H138.183V22.2878C138.183 15.3252 131.743 13.277 128.523 13.1232C108.681 13.0469 64.8207 12.8942 64.8207 12.8942C54.7373 13.2781 55.3488 5.42184 46.2844 4.19397C36.7688 4.19397 22.5266 3.96347 15.2166 3.96347C7.90647 3.96347 5.9049 10.3764 5.81787 13.5828Z" fill="#FF3900"/>
-</g>
-<g filter="url(#filter1_d_92_166)">
-<rect x="5.81787" y="25.7305" width="132.365" height="91.724" rx="5.86577" fill="#FF5E30"/>
-</g>
-<defs>
-<filter id="filter0_d_92_166" x="2.15176" y="0.297361" width="139.697" height="35.2759" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-<feFlood flood-opacity="0" result="BackgroundImageFix"/>
-<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
-<feOffset/>
-<feGaussianBlur stdDeviation="1.83305"/>
-<feComposite in2="hardAlpha" operator="out"/>
-<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
-<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_92_166"/>
-<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_92_166" result="shape"/>
-</filter>
-<filter id="filter1_d_92_166" x="0.39203" y="20.3047" width="143.216" height="102.576" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-<feFlood flood-opacity="0" result="BackgroundImageFix"/>
-<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
-<feOffset/>
-<feGaussianBlur stdDeviation="2.71292"/>
-<feComposite in2="hardAlpha" operator="out"/>
-<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
-<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_92_166"/>
-<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_92_166" result="shape"/>
-</filter>
-</defs>
+<svg width="133" height="114" viewBox="0 0 133 114" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="133" height="114" fill="#373737"/>
+<path d="M0 9.61933V25.8806V27.9437H132.365V18.3243C132.365 11.3618 125.925 9.31353 122.705 9.15974C102.863 9.08339 59.0028 8.9307 59.0028 8.9307C48.9194 9.31465 49.5309 1.45837 40.4665 0.230504C30.951 0.230496 16.7088 0 9.39868 0C2.0886 0 0.0870248 6.41289 0 9.61933Z" fill="#FF3900"/>
+<rect y="21.767" width="132.365" height="91.724" rx="5.86577" fill="#FF5E30"/>
 </svg>
